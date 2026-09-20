@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f6fa;
+            color: #222;
+        }
+
+        /* Header */
+        header {
+            background: #667eea;
+            color: white;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h2 {
+            font-size: 21px;
+        }
+
+        .logout {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 7px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Main */
+        main {
+            padding: 25px 6%;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            font-size: 28px;
+        }
+
+        .welcome p {
+            color: #777;
+            margin-top: 7px;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 13px;
+            box-shadow: 0 3px 12px rgba(0,0,0,.08);
+        }
+
+        .icon {
+            font-size: 30px;
+            margin-bottom: 12px;
+        }
+
+        .card h3 {
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: #777;
+        }
+
+        /* Profile */
+        .profile {
+            margin-top: 25px;
+            background: white;
+            padding: 25px;
+            border-radius: 13px;
+        }
+
+        .profile h2 {
+            margin-bottom: 18px;
+        }
+
+        .profile-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .profile-row span:first-child {
+            color: #777;
+        }
+
+        /* Mobile */
+        @media(max-width:700px) {
+            .cards {
+                grid-template-columns: 1fr 1fr;
+            }
+            .welcome h1 {
+                font-size: 24px;
+            }
+        }
+
+        @media(max-width:450px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+            header {
+                padding: 15px 5%;
+            }
+            main {
+                padding: 22px 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>🎓 Student Management</h2>
+    <button class="logout">Logout</button>
+</header>
+
+<main>
+
+    <div class="welcome">
+        <h1>Welcome, Student 👋</h1>
+        <p>Here's your academic overview</p>
+    </div>
+
+    <div class="cards">
+        <div class="card">
+            <div class="icon">📊</div>
+            <h3>Attendance</h3>
+            <p>85% Attendance</p>
+        </div>
+
+        <div class="card">
+            <div class="icon">📚</div>
+            <h3>Courses</h3>
+            <p>6 Active Courses</p>
+        </div>
+
+        <div class="card">
+            <div class="icon">🏆</div>
+            <h3>Marks</h3>
+            <p>CGPA: 8.2</p>
+        </div>
+
+        <div class="card">
+            <div class="icon">📝</div>
+            <h3>Assignments</h3>
+            <p>3 Pending</p>
+        </div>
+
+        <div class="card">
+            <div class="icon">🔔</div>
+            <h3>Notifications</h3>
+            <p>4 New Notifications</p>
+        </div>
+
+        <div class="card">
+            <div class="icon">📅</div>
+            <h3>Timetable</h3>
+            <p>View Today's Classes</p>
+        </div>
+    </div>
+
+    <div class="profile">
+        <h2>👤 Student Profile</h2>
+
+        <div class="profile-row">
+            <span>Name</span>
+            <b>Loading...</b>
+        </div>
+
+        <div class="profile-row">
+            <span>Course</span>
+            <b>Loading...</b>
+        </div>
+
+        <div class="profile-row">
+            <span>Year</span>
+            <b>Loading...</b>
+        </div>
+
+        <div class="profile-row">
+            <span>Student ID</span>
+            <b>Loading...</b>
+        </div>
+    </div>
+
+</main>
+
+<!-- script.js Module-ஆக இணைக்கப்பட்டுள்ளது -->
+<script type="module" src="script.js"></script>
+
+</body>
+</html>

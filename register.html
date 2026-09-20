@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="login-container">
+    <div class="login-card">
+
+        <div class="logo">🎓</div>
+
+        <h1>Create Account</h1>
+        <p class="subtitle">Register as a student</p>
+
+        <form id="registerForm">
+
+            <label>Full Name</label>
+            <input type="text" id="name" placeholder="Enter your full name" required>
+
+            <label>Email</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Create a password" minlength="6" required>
+
+            <label>Course</label>
+            <select id="course" required>
+                <option value="">Select your course</option>
+                <option value="B.Sc Computer Science">B.Sc Computer Science</option>
+                <option value="BCA">BCA</option>
+                <option value="B.Sc IT">B.Sc Information Technology</option>
+                <option value="B.Com">B.Com</option>
+            </select>
+
+            <label>Year</label>
+            <select id="year" required>
+                <option value="">Select year</option>
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year">3rd Year</option>
+            </select>
+
+            <button type="submit">Create Account</button>
+
+        </form>
+
+        <p id="registerMessage"></p>
+
+        <p class="register">
+            Already have an account?
+            <span onclick="window.location.href='index.html'">Login</span>
+        </p>
+
+    </div>
+</div>
+
+<!-- JavaScript Module-ஆக script.js இணைக்கப்பட்டுள்ளது -->
+<script type="module" src="script.js"></script>
+
+</body>
+</html>

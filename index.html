@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Management System</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <div class="login-card">
+
+            <div class="logo">
+                🎓
+            </div>
+
+            <h1>Student Management</h1>
+
+            <p class="subtitle">
+                Login to your account
+            </p>
+
+            <form id="loginForm">
+
+                <label>Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    required
+                >
+
+                <label>Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+                <button type="submit">
+                    Login
+                </button>
+
+            </form>
+
+            <p id="message"></p>
+
+            <p class="register">
+                Don't have an account?
+                <span onclick="window.location.href='register.html'">
+                    Register
+                </span>
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- JavaScript module-ஆக இணைக்கப்பட்டுள்ளது -->
+    <script type="module" src="script.js"></script>
+
+</body>
+</html>
