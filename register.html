@@ -1,17 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Student Registration</title>
+
     <link rel="stylesheet" href="style.css">
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <!-- Face API -->
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
 </head>
 
 <body>
 
-<div class="login-container">
-    <div class="login-card">
+<div class="page-container">
+
+    <div class="login-card register-card">
 
         <div class="logo">🎓</div>
 
@@ -20,48 +30,147 @@
 
         <form id="registerForm">
 
-            <label>Full Name</label>
-            <input type="text" id="name" placeholder="Enter your full name" required>
+            <div class="input-group">
+                <label for="registerName">Full Name</label>
+                <input
+                    type="text"
+                    id="registerName"
+                    placeholder="Enter full name"
+                    required
+                >
+            </div>
 
-            <label>Email</label>
-            <input type="email" id="email" placeholder="Enter your email" required>
+            <div class="input-group">
+                <label for="registerRegNo">Register Number</label>
+                <input
+                    type="text"
+                    id="registerRegNo"
+                    placeholder="Enter register number"
+                    required
+                >
+            </div>
 
-            <label>Password</label>
-            <input type="password" id="password" placeholder="Create a password" minlength="6" required>
+            <div class="input-group">
+                <label for="registerEmail">Email</label>
+                <input
+                    type="email"
+                    id="registerEmail"
+                    placeholder="Enter email"
+                    required
+                >
+            </div>
 
-            <label>Course</label>
-            <select id="course" required>
-                <option value="">Select your course</option>
-                <option value="B.Sc Computer Science">B.Sc Computer Science</option>
-                <option value="BCA">BCA</option>
-                <option value="B.Sc IT">B.Sc Information Technology</option>
-                <option value="B.Com">B.Com</option>
-            </select>
+            <div class="input-group">
+                <label for="registerPassword">Password</label>
+                <input
+                    type="password"
+                    id="registerPassword"
+                    placeholder="Minimum 6 characters"
+                    minlength="6"
+                    required
+                >
+            </div>
 
-            <label>Year</label>
-            <select id="year" required>
-                <option value="">Select year</option>
-                <option value="1st Year">1st Year</option>
-                <option value="2nd Year">2nd Year</option>
-                <option value="3rd Year">3rd Year</option>
-            </select>
+            <div class="input-group">
+                <label for="registerCourse">Course / Department</label>
 
-            <button type="submit">Create Account</button>
+                <select id="registerCourse" required>
+                    <option value="">Select course</option>
+                    <option value="BSc Computer Science">
+                        BSc Computer Science
+                    </option>
+                    <option value="BCA">
+                        BCA
+                    </option>
+                    <option value="BCom">
+                        BCom
+                    </option>
+                    <option value="BA">
+                        BA
+                    </option>
+                    <option value="Other">
+                        Other
+                    </option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="registerYear">Year</label>
+
+                <select id="registerYear" required>
+                    <option value="">Select year</option>
+                    <option value="1">1st Year</option>
+                    <option value="2">2nd Year</option>
+                    <option value="3">3rd Year</option>
+                    <option value="4">4th Year</option>
+                </select>
+            </div>
+
+            <!-- Face Enrollment -->
+            <div class="face-section">
+
+                <h3>📷 Face Enrollment</h3>
+
+                <p class="small-text">
+                    Your face will be used only for attendance verification.
+                </p>
+
+                <video
+                    id="registerVideo"
+                    class="camera-video"
+                    autoplay
+                    muted
+                    playsinline
+                ></video>
+
+                <canvas
+                    id="registerCanvas"
+                    style="display:none;"
+                ></canvas>
+
+                <button
+                    type="button"
+                    id="startRegisterCamera"
+                    class="secondary-btn"
+                >
+                    Open Camera
+                </button>
+
+                <button
+                    type="button"
+                    id="captureFace"
+                    class="secondary-btn"
+                    style="display:none;"
+                >
+                    Capture Face
+                </button>
+
+                <p id="faceMessage" class="message"></p>
+
+            </div>
+
+            <button
+                type="submit"
+                id="registerButton"
+                class="primary-btn"
+            >
+                Create Account
+            </button>
+
+            <p id="registerMessage" class="message"></p>
 
         </form>
 
-        <p id="registerMessage"></p>
-
-        <p class="register">
+        <div class="register-link">
             Already have an account?
-            <span onclick="window.location.href='index.html'">Login</span>
-        </p>
+            <a href="index.html">Login</a>
+        </div>
 
     </div>
+
 </div>
 
-<!-- JavaScript Module-ஆக script.js இணைக்கப்பட்டுள்ளது -->
-<script type="module" src="script.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
