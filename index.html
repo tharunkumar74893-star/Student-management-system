@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Admin Dashboard</title>
+    <title>Student Management System</title>
 
     <link rel="stylesheet" href="style.css">
 
@@ -12,392 +12,101 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-    <!-- Chart.js for Analytics -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- SheetJS for Excel Export -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 
 <body>
 
-<header class="top-header">
+<div class="page-container">
 
-    <div>
-        <h2>🛠️ Admin Panel</h2>
-        <p id="adminHeaderName">Administrator</p>
-    </div>
+    <div class="login-card">
 
-    <div style="display: flex; gap: 10px; align-items: center;">
-        <button type="button" id="themeToggleBtn" class="secondary-btn small-btn">🌙 Dark Mode</button>
-        <button
-            type="button"
-            class="logout-btn"
-            id="adminLogoutBtn"
-        >
-            Logout
-        </button>
-    </div>
-
-</header>
-
-
-<main class="admin-container">
-
-    <!-- Admin Information -->
-    <section class="welcome-card">
+        <!-- Logo -->
+        <div class="logo">
+            🎓
+        </div>
 
         <h1>Student Management</h1>
 
-        <p>
-            Manage students and attendance records.
+        <p class="subtitle">
+            Login to your account
         </p>
 
-    </section>
 
+        <!-- LOGIN FORM -->
+        <form id="loginForm">
 
-    <!-- Statistics -->
-    <section class="dashboard-grid">
-
-        <div class="dashboard-card">
-
-            <div class="card-icon">
-                👨‍🎓
-            </div>
-
-            <h3>Total Students</h3>
-
-            <div
-                id="totalStudents"
-                class="big-number"
-            >
-                0
-            </div>
-
-        </div>
-
-
-        <div class="dashboard-card">
-
-            <div class="card-icon">
-                ✅
-            </div>
-
-            <h3>Present Today</h3>
-
-            <div
-                id="presentToday"
-                class="big-number"
-            >
-                0
-            </div>
-
-        </div>
-
-
-        <div class="dashboard-card">
-
-            <div class="card-icon">
-                ❌
-            </div>
-
-            <h3>Absent Today</h3>
-
-            <div
-                id="absentToday"
-                class="big-number"
-            >
-                0
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- Analytics Chart Section -->
-    <section class="table-card">
-        <div class="section-header">
-            <div>
-                <h2>📊 Attendance Analytics</h2>
-                <p>Visual presentation of today's attendance</p>
-            </div>
-        </div>
-        <div style="max-width: 300px; margin: 0 auto;">
-            <canvas id="attendanceChart"></canvas>
-        </div>
-    </section>
-
-
-    <!-- Date-wise Attendance -->
-    <section class="table-card">
-
-        <div class="section-header">
-
-            <div>
-                <h2>📅 Date-wise Attendance</h2>
-                <p>View and manage attendance records</p>
-            </div>
-
-            <div class="date-filter">
-
-                <label for="attendanceDate">
-                    Select Date
-                </label>
-
-                <input
-                    type="date"
-                    id="attendanceDate"
-                >
-
-                <button
-                    type="button"
-                    id="loadAttendanceBtn"
-                    class="primary-btn small-btn"
-                >
-                    View
-                </button>
-
-                <button
-                    type="button"
-                    id="exportExcelBtn"
-                    class="secondary-btn small-btn"
-                >
-                    📥 Export Excel
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <div class="table-wrapper">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-                        <th>Register No</th>
-                        <th>Student Name</th>
-                        <th>Course</th>
-                        <th>Status</th>
-                        <th>Time</th>
-                        <th>Action</th>
-                    </tr>
-
-                </thead>
-
-                <tbody id="adminAttendanceBody">
-
-                    <tr>
-                        <td colspan="6">
-                            Select a date to view attendance.
-                        </td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </section>
-
-
-    <!-- Student Management -->
-    <section class="table-card">
-
-        <div class="section-header">
-
-            <div>
-                <h2>👨‍🎓 Student Management</h2>
-                <p>View and manage registered students</p>
-            </div>
-
-            <input
-                type="text"
-                id="studentSearch"
-                class="search-input"
-                placeholder="Search student..."
-            >
-
-        </div>
-
-
-        <div class="table-wrapper">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-                        <th>Register No</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Course</th>
-                        <th>Year</th>
-                        <th>Action</th>
-                    </tr>
-
-                </thead>
-
-                <tbody id="studentsTableBody">
-
-                    <tr>
-                        <td colspan="6">
-                            Loading students...
-                        </td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </section>
-
-</main>
-
-
-<!-- Edit Student Modal -->
-
-<div
-    id="editStudentModal"
-    class="modal"
->
-
-    <div class="modal-content">
-
-        <button
-            type="button"
-            id="closeEditModal"
-            class="close-btn"
-        >
-            ×
-        </button>
-
-        <h2>✏️ Edit Student</h2>
-
-        <form id="editStudentForm">
-
-            <input
-                type="hidden"
-                id="editStudentUid"
-            >
-
+            <!-- Email -->
             <div class="input-group">
 
-                <label for="editName">
-                    Student Name
+                <label for="loginEmail">
+                    Email
                 </label>
 
                 <input
-                    type="text"
-                    id="editName"
+                    type="email"
+                    id="loginEmail"
+                    placeholder="Enter your email"
+                    autocomplete="email"
                     required
                 >
 
             </div>
 
 
+            <!-- Password -->
             <div class="input-group">
 
-                <label for="editRegNo">
-                    Register Number
+                <label for="loginPassword">
+                    Password
                 </label>
 
                 <input
-                    type="text"
-                    id="editRegNo"
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
                     required
                 >
 
             </div>
 
 
-            <div class="input-group">
-
-                <label for="editCourse">
-                    Course
-                </label>
-
-                <select id="editCourse" required>
-
-                    <option value="BSc Computer Science">
-                        BSc Computer Science
-                    </option>
-
-                    <option value="BCA">
-                        BCA
-                    </option>
-
-                    <option value="BCom">
-                        BCom
-                    </option>
-
-                    <option value="BA">
-                        BA
-                    </option>
-
-                    <option value="Other">
-                        Other
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="input-group">
-
-                <label for="editYear">
-                    Year
-                </label>
-
-                <select id="editYear" required>
-
-                    <option value="1">
-                        1st Year
-                    </option>
-
-                    <option value="2">
-                        2nd Year
-                    </option>
-
-                    <option value="3">
-                        3rd Year
-                    </option>
-
-                    <option value="4">
-                        4th Year
-                    </option>
-
-                </select>
-
-            </div>
-
-
+            <!-- Login Button -->
             <button
                 type="submit"
+                id="loginButton"
                 class="primary-btn"
             >
-                Save Changes
+                Login
             </button>
 
+
+            <!-- Login Message -->
             <p
-                id="editMessage"
+                id="loginMessage"
                 class="message"
             ></p>
 
         </form>
+
+
+        <!-- Register Link -->
+        <div class="register-link">
+
+            Don't have an account?
+
+            <a href="register.html">
+                Register
+            </a>
+
+        </div>
 
     </div>
 
 </div>
 
 
+<!-- Main JavaScript -->
 <script src="script.js"></script>
 
 </body>
