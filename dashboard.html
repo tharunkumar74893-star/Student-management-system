@@ -3,217 +3,291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Student Dashboard</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+    <link rel="stylesheet" href="style.css">
 
-        body {
-            background: #f5f6fa;
-            color: #222;
-        }
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
-        /* Header */
-        header {
-            background: #667eea;
-            color: white;
-            padding: 18px 6%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    <!-- Face API -->
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
 
-        header h2 {
-            font-size: 21px;
-        }
-
-        .logout {
-            background: white;
-            color: #667eea;
-            border: none;
-            padding: 9px 16px;
-            border-radius: 7px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* Main */
-        main {
-            padding: 25px 6%;
-        }
-
-        .welcome {
-            margin-bottom: 25px;
-        }
-
-        .welcome h1 {
-            font-size: 28px;
-        }
-
-        .welcome p {
-            color: #777;
-            margin-top: 7px;
-        }
-
-        /* Cards */
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-        }
-
-        .card {
-            background: white;
-            padding: 22px;
-            border-radius: 13px;
-            box-shadow: 0 3px 12px rgba(0,0,0,.08);
-        }
-
-        .icon {
-            font-size: 30px;
-            margin-bottom: 12px;
-        }
-
-        .card h3 {
-            margin-bottom: 8px;
-        }
-
-        .card p {
-            color: #777;
-        }
-
-        /* Profile */
-        .profile {
-            margin-top: 25px;
-            background: white;
-            padding: 25px;
-            border-radius: 13px;
-        }
-
-        .profile h2 {
-            margin-bottom: 18px;
-        }
-
-        .profile-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .profile-row span:first-child {
-            color: #777;
-        }
-
-        /* Mobile */
-        @media(max-width:700px) {
-            .cards {
-                grid-template-columns: 1fr 1fr;
-            }
-            .welcome h1 {
-                font-size: 24px;
-            }
-        }
-
-        @media(max-width:450px) {
-            .cards {
-                grid-template-columns: 1fr;
-            }
-            header {
-                padding: 15px 5%;
-            }
-            main {
-                padding: 22px 5%;
-            }
-        }
-    </style>
+    <!-- FullCalendar -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 </head>
 
 <body>
 
-<header>
-    <h2>🎓 Student Management</h2>
-    <button class="logout">Logout</button>
+<header class="top-header">
+
+    <div>
+        <h2>🎓 Student Portal</h2>
+        <p id="studentHeaderName">Welcome</p>
+    </div>
+
+    <div style="display: flex; gap: 10px; align-items: center;">
+        <button type="button" id="themeToggleBtn" class="secondary-btn small-btn">🌙 Dark Mode</button>
+        <button
+            type="button"
+            class="logout-btn"
+            id="logoutBtn"
+        >
+            Logout
+        </button>
+    </div>
+
 </header>
 
-<main>
 
-    <div class="welcome">
-        <h1>Welcome, Student 👋</h1>
-        <p>Here's your academic overview</p>
+<main class="dashboard-container">
+
+    <!-- Welcome -->
+    <section class="welcome-card">
+
+        <h1 id="welcomeName">
+            Welcome Student 👋
+        </h1>
+
+        <p>
+            Manage your attendance and academic information.
+        </p>
+
+    </section>
+
+    <!-- Low Attendance Warning Alert -->
+    <div id="attendanceWarning" class="warning-box" style="display: none;">
+        ⚠️ <strong>Warning:</strong> Your attendance is below 75%. Please ensure regular attendance to maintain eligibility!
     </div>
 
-    <div class="cards">
-        <div class="card">
-            <div class="icon">📊</div>
+
+    <!-- Student Information -->
+    <section class="info-card">
+
+        <h2>👤 Student Information</h2>
+
+        <div class="info-grid">
+
+            <div>
+                <span>Name</span>
+                <strong id="studentName">-</strong>
+            </div>
+
+            <div>
+                <span>Register Number</span>
+                <strong id="studentRegNo">-</strong>
+            </div>
+
+            <div>
+                <span>Email</span>
+                <strong id="studentEmail">-</strong>
+            </div>
+
+            <div>
+                <span>Course</span>
+                <strong id="studentCourse">-</strong>
+            </div>
+
+            <div>
+                <span>Year</span>
+                <strong id="studentYear">-</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Attendance -->
+    <section class="dashboard-grid">
+
+        <div class="dashboard-card attendance-card">
+
+            <div class="card-icon">
+                📅
+            </div>
+
             <h3>Attendance</h3>
-            <p>85% Attendance</p>
+
+            <div
+                id="attendancePercentage"
+                class="big-number"
+            >
+                0%
+            </div>
+
+            <p>
+                Overall Attendance
+            </p>
+
         </div>
 
-        <div class="card">
-            <div class="icon">📚</div>
-            <h3>Courses</h3>
-            <p>6 Active Courses</p>
+
+        <div class="dashboard-card today-card">
+
+            <div class="card-icon">
+                🕐
+            </div>
+
+            <h3>Today's Status</h3>
+
+            <div
+                id="todayStatus"
+                class="status-badge pending"
+            >
+                Not Marked
+            </div>
+
+            <button
+                type="button"
+                id="openFaceScanner"
+                class="primary-btn small-btn"
+            >
+                📷 Mark Attendance
+            </button>
+
         </div>
 
-        <div class="card">
-            <div class="icon">🏆</div>
-            <h3>Marks</h3>
-            <p>CGPA: 8.2</p>
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                📊
+            </div>
+
+            <h3>Total Days</h3>
+
+            <div
+                id="totalDays"
+                class="big-number"
+            >
+                0
+            </div>
+
+            <p>
+                Attendance Records
+            </p>
+
         </div>
 
-        <div class="card">
-            <div class="icon">📝</div>
-            <h3>Assignments</h3>
-            <p>3 Pending</p>
+    </section>
+
+    <!-- Student Attendance Calendar -->
+    <section class="table-card">
+        <div class="section-header">
+            <div>
+                <h2>📅 Attendance Calendar View</h2>
+                <p>Monthly view of your attendance</p>
+            </div>
+        </div>
+        <div id="calendar" style="max-width: 800px; margin: 0 auto; padding: 10px;"></div>
+    </section>
+
+
+    <!-- Attendance History -->
+    <section class="table-card">
+
+        <div class="section-header">
+
+            <div>
+                <h2>📋 Attendance History</h2>
+                <p>Recent attendance records</p>
+            </div>
+
         </div>
 
-        <div class="card">
-            <div class="icon">🔔</div>
-            <h3>Notifications</h3>
-            <p>4 New Notifications</p>
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+
+                <tbody id="attendanceTableBody">
+
+                    <tr>
+                        <td colspan="3">
+                            Loading...
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
         </div>
 
-        <div class="card">
-            <div class="icon">📅</div>
-            <h3>Timetable</h3>
-            <p>View Today's Classes</p>
-        </div>
-    </div>
-
-    <div class="profile">
-        <h2>👤 Student Profile</h2>
-
-        <div class="profile-row">
-            <span>Name</span>
-            <b>Loading...</b>
-        </div>
-
-        <div class="profile-row">
-            <span>Course</span>
-            <b>Loading...</b>
-        </div>
-
-        <div class="profile-row">
-            <span>Year</span>
-            <b>Loading...</b>
-        </div>
-
-        <div class="profile-row">
-            <span>Student ID</span>
-            <b>Loading...</b>
-        </div>
-    </div>
+    </section>
 
 </main>
 
-<!-- script.js Module-ஆக இணைக்கப்பட்டுள்ளது -->
-<script type="module" src="script.js"></script>
+
+<!-- Face Scanner Modal -->
+
+<div
+    id="faceScannerModal"
+    class="modal"
+>
+
+    <div class="modal-content face-modal">
+
+        <button
+            type="button"
+            id="closeFaceScanner"
+            class="close-btn"
+        >
+            ×
+        </button>
+
+        <h2>📷 Face Attendance</h2>
+
+        <p class="small-text">
+            Look directly at the camera.
+        </p>
+
+        <div class="scanner-container">
+
+            <video
+                id="attendanceVideo"
+                class="camera-video"
+                autoplay
+                muted
+                playsinline
+            ></video>
+
+            <div class="scanner-frame"></div>
+
+        </div>
+
+        <p
+            id="scannerMessage"
+            class="message"
+        >
+            Preparing camera...
+        </p>
+
+        <button
+            type="button"
+            id="verifyFaceBtn"
+            class="primary-btn"
+        >
+            Verify Face & Mark Attendance
+        </button>
+
+    </div>
+
+</div>
+
+
+<script src="script.js"></script>
 
 </body>
 </html>
